@@ -6,6 +6,10 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 Middleware in Node.js
 HTTP response status codes
+mongoose-aggregate-paginate-v2
+npm i bcrypt
+npm i jsonwebtoken
+
 
  -->
 
@@ -26,9 +30,9 @@ HTTP response status codes
 
 
 
+Model link
 
-
-
+https://app.eraser.io/workspace/YtPqZ1VogxGy1jzIDkzj
 
 
  # YouTube Back-End (YouTube‑like Backend API)
