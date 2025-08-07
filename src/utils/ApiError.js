@@ -4,7 +4,7 @@ class ApiError extends Error {
     statusCode,             // Ye HTTP error code hai jaise 404, 500, 401, etc.
     message = 'Something Went Wrong',  // Default message agar koi message na mile
     errors = [],            // Agar multiple errors ho to unka array
-    statck = ''             // Custom stack trace agar dena ho
+    stack = ''             // Custom stack trace agar dena ho
   ) {
     super(message); // Parent class (Error) ke constructor ko call kar rahe hain
 
@@ -15,8 +15,8 @@ class ApiError extends Error {
     this.errors = errors;         // Error details ya multiple errors ka array
 
     // Agar stack trace diya gaya hai to use hi use karenge
-    if (statck) {
-      this.stack = statck;
+    if (stack) {
+      this.stack = stack;
     } else {
       // Nahi to default stack trace generate karenge
       Error.captureStackTrace(this, this.constructor);

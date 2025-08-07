@@ -9,7 +9,10 @@ HTTP response status codes
 mongoose-aggregate-paginate-v2
 npm i bcrypt
 npm i jsonwebtoken
-
+npm i express-fileupload
+npm i cloudinary
+npm i multer
+Cloudinary use data upload 
 
  -->
 

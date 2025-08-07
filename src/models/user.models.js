@@ -2,10 +2,10 @@
 import mongoose, { Schema } from 'mongoose';
 
 // JWT for token generation
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
 
 // bcrypt password ko hash karne ke liye
-import bcrypt from "bcrypt"
+import bcrypt from 'bcrypt';
 
 // User schema define kar rahe hain
 const userSchema = new Schema(
@@ -75,51 +75,49 @@ const userSchema = new Schema(
 
 // Save hone se pehle ye function chalega (middleware)
 // Password hash karne ke liye use hota hai
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
+  // Agar password modify nahi hua hai to next() call karo, hash mat karo
+  if (this.isModified('password')) return next();
 
-    // Agar password modify nahi hua hai to next() call karo, hash mat karo
-    if (this.isModified("password")) return next();
-
-    // Agar modify hua hai to password hash karo
-    this.password = bcrypt.hash(this.password, 10);  // 10 is the salt rounds
-    next();
+  // Agar modify hua hai to password hash karo
+  this.password = bcrypt.hash(this.password, 10); // 10 is the salt rounds
+  next();
 });
-
 
 // Ye method check karega ki entered password aur stored password same hai ya nahi
 userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password);
-}
-
+  return await bcrypt.compare(password, this.password);
+};
 
 // Ye method access token banata hai JWT ke zariye
 userSchema.methods.generateAccessToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-            email: this.email,
-            username: this.username,
-            fullname: this.fullname,
-        },
-        process.env.ACCESS_TOKEN_SECRET,  // Secret key env file se
-        {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY  // Token kab expire hoga
-        }
-    );
-}
+  return jwt.sign(
+    {
+      _id: this._id,
+      email: this.email,
+      username: this.username,
+      fullname: this.fullname,
+    },
+    process.env.ACCESS_TOKEN_SECRET, // Secret key env file se
+    {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY, // Token kab expire hoga
+    }
+  );
+};
 
 // Ye method refresh token banata hai
 userSchema.methods.generateRefreshToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-        },
-        process.env.REFRESH_TOKEN_SECRET,  // Secret key env file se
-        {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRY  // Token expire hone ka time
-        }
-    );
-}
+  return jwt.sign(
+    {
+      _id: this._id,
+    },
+    process.env.REFRESH_TOKEN_SECRET, // Secret key env file se
+    {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY, // Token expire hone ka time
+    }
+  );
+};
 
 // Is schema ko model bana ke export kar rahe hain
 export const User = mongoose.model('User', userSchema);
+ 
